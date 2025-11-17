@@ -654,12 +654,19 @@
                 font-size: 24px;
             }
         }
+
+        @media (min-width: 601px) {
+            .cursor-glow,
+            .cursor-dot {
+                display: block;
+            }
+        }
     </style>
 </head>
 <body>
     <div id="particles"></div>
-    <div class="cursor-glow"></div>
-    <div class="cursor-dot"></div>
+    <div class="cursor-glow" style="display: none;"></div>
+    <div class="cursor-dot" style="display: none;"></div>
 
     <div class="container" id="mainContainer">
         <div class="profile-section">
@@ -758,21 +765,184 @@
             particlesContainer.appendChild(particle);
         }
 
-        // Custom cursor
+        // Custom cursor (only on desktop)
         const cursorGlow = document.querySelector('.cursor-glow');
         const cursorDot = document.querySelector('.cursor-dot');
 
-        document.addEventListener('mousemove', (e) => {
-            cursorDot.style.left = e.clientX + 'px';
-            cursorDot.style.top = e.clientY + 'px';
+        if (window.innerWidth > 600) {
+            cursorGlow.style.display = 'block';
+            cursorDot.style.display = 'block';
             
-            setTimeout(() => {
+            document.addEventListener('mousemove', (e) => {
+                cursorDot.style.left = e.clientX + 'px';
+                cursorDot.style.top = e.clientY + 'px';
+                
                 cursorGlow.style.left = (e.clientX - 15) + 'px';
                 cursorGlow.style.top = (e.clientY - 15) + 'px';
-            }, 50);
-        });
+            });
+        }
 
-        // 3D tilt effect
+        // 3D tilt effect on container
         const container = document.getElementById('mainContainer');
         
-        container.addEventListener('mousem
+        container.addEventListener('mousemove', (e) => {
+            const rect = container.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = (y - centerY) / 20;
+            const rotateY = (centerX - x) / 20;
+            
+            container.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+        });
+        
+        container.addEventListener('mouseleave', () => {
+            container.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+        });
+
+        // Ripple effect on clicks
+        document.addEventListener('click', (e) => {
+            const ripple = document.createElement('div');
+            ripple.className = 'ripple';
+            ripple.style.left = e.clientX + 'px';
+            ripple.style.top = e.clientY + 'px';
+            ripple.style.width = '10px';
+            ripple.style.height = '10px';
+            document.body.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        });
+
+        // Magnetic effect on social links
+        const socialLinks = document.querySelectorAll('.social-link');
+        
+        socialLinks.forEach(link => {
+            link.addEventListener('mousemove', (e) => {
+                const rect = link.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                link.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px) translateY(-5px) scale(1.05)`;
+            });
+            
+            link.addEventListener('mouseleave', () => {
+                link.style.transform = '';
+            });
+        });
+
+        // Enhanced badge hover effects
+        const badges = document.querySelectorAll('.badge');
+        
+        badges.forEach(badge => {
+            badge.addEventListener('mouseenter', () => {
+                badge.style.animation = 'none';
+                setTimeout(() => {
+                    badge.style.animation = '';
+                }, 10);
+            });
+        });
+
+        // Particle mouse interaction
+        document.addEventListener('mousemove', (e) => {
+            const particles = document.querySelectorAll('.particle');
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
+            
+            particles.forEach(particle => {
+                const rect = particle.getBoundingClientRect();
+                const particleX = rect.left + rect.width / 2;
+                const particleY = rect.top + rect.height / 2;
+                
+                const distance = Math.sqrt(Math.pow(mouseX - particleX, 2) + Math.pow(mouseY - particleY, 2));
+                
+                if (distance < 150) {
+                    const angle = Math.atan2(particleY - mouseY, particleX - mouseX);
+                    const force = (150 - distance) / 150;
+                    const moveX = Math.cos(angle) * force * 30;
+                    const moveY = Math.sin(angle) * force * 30;
+                    
+                    particle.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                } else {
+                    particle.style.transform = 'translate(0, 0)';
+                }
+            });
+        });
+
+        // Music control
+        const audio = document.getElementById('bgMusic');
+        const musicToggle = document.getElementById('musicToggle');
+        let isPlaying = false;
+
+        musicToggle.addEventListener('click', () => {
+            if (isPlaying) {
+                audio.pause();
+                musicToggle.textContent = '🔇';
+                musicToggle.style.animation = 'none';
+            } else {
+                audio.play();
+                musicToggle.textContent = '🔊';
+                musicToggle.style.animation = 'pulse 2s infinite';
+            }
+            isPlaying = !isPlaying;
+        });
+
+        // Auto-play attempt
+        window.addEventListener('load', () => {
+            audio.volume = 0.3;
+            audio.play().then(() => {
+                isPlaying = true;
+                musicToggle.textContent = '🔊';
+            }).catch(() => {
+                console.log('Auto-play blocked. Click the button to play music.');
+            });
+        });
+
+        // Smooth scroll reveal (if you add more sections later)
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'm' || e.key === 'M') {
+                musicToggle.click();
+            }
+        });
+
+        // Easter egg: Konami code
+        const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+        let konamiIndex = 0;
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === konamiCode[konamiIndex]) {
+                konamiIndex++;
+                if (konamiIndex === konamiCode.length) {
+                    // Easter egg activated!
+                    document.body.style.animation = 'gradient 2s ease infinite';
+                    container.style.animation = 'rotate3d 10s linear infinite';
+                    konamiIndex = 0;
+                    
+                    setTimeout(() => {
+                        container.style.animation = 'fadeInUp 0.8s ease';
+                    }, 10000);
+                }
+            } else {
+                konamiIndex = 0;
+            }
+        });
+    </script>
