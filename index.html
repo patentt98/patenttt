@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@patentt</title>
+    <title>@patentt - Enhanced</title>
     <style>
         * {
             margin: 0;
@@ -18,24 +18,57 @@
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
         }
 
         @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
         }
 
-        @keyframes slideIn {
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(10px);
+                transform: translateY(30px);
             }
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
+        }
+
+        @keyframes statusPulse {
+            0%, 100% { 
+                box-shadow: 0 0 0 0 rgba(67, 181, 129, 0.7);
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 0 0 0 10px rgba(67, 181, 129, 0);
+                transform: scale(1.1);
+            }
+        }
+
+        @keyframes textGlow {
+            0%, 100% { 
+                text-shadow: 0 0 10px rgba(102, 126, 234, 0.5),
+                             0 0 20px rgba(102, 126, 234, 0.3);
+            }
+            50% { 
+                text-shadow: 0 0 20px rgba(102, 126, 234, 0.8),
+                             0 0 40px rgba(102, 126, 234, 0.5),
+                             0 0 60px rgba(102, 126, 234, 0.3);
+            }
+        }
+
+        @keyframes rotate3d {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
         }
 
         body {
@@ -51,36 +84,88 @@
             padding: 20px;
             position: relative;
             overflow: hidden;
+            cursor: none;
         }
 
-        body::before {
-            content: '';
+        #particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
             position: absolute;
-            width: 200%;
-            height: 200%;
-            background: 
-                radial-gradient(circle at 20% 50%, rgba(88, 101, 242, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(240, 147, 251, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 40% 20%, rgba(102, 126, 234, 0.15) 0%, transparent 50%);
-            animation: float 20s ease-in-out infinite;
+            width: 4px;
+            height: 4px;
+            background: rgba(102, 126, 234, 0.6);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 20s infinite ease-in-out;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.8);
+        }
+
+        .cursor-glow {
+            position: fixed;
+            width: 30px;
+            height: 30px;
+            border: 2px solid rgba(102, 126, 234, 0.5);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.15s ease;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+        }
+
+        .cursor-dot {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: rgba(102, 126, 234, 0.8);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            box-shadow: 0 0 15px rgba(102, 126, 234, 0.8);
         }
 
         .container {
             max-width: 700px;
             width: 100%;
             background: rgba(30, 30, 30, 0.85);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(20px);
             border-radius: 20px;
             padding: 40px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5),
+                        0 0 100px rgba(102, 126, 234, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
             z-index: 1;
+            transition: transform 0.1s ease;
+            animation: fadeInUp 0.8s ease;
+            cursor: auto;
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #667eea);
+            background-size: 300% 300%;
+            border-radius: 20px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            animation: gradient 3s ease infinite;
+        }
+
+        .container:hover::before {
+            opacity: 0.5;
         }
 
         .profile-section {
@@ -88,6 +173,7 @@
             flex-direction: column;
             align-items: center;
             margin-bottom: 30px;
+            animation: fadeInUp 1s ease 0.2s backwards;
         }
 
         .avatar {
@@ -96,25 +182,38 @@
             border-radius: 50%;
             overflow: hidden;
             margin-bottom: 20px;
-            animation: pulse 3s ease-in-out infinite;
-            box-shadow: 0 0 40px rgba(102, 126, 234, 0.5);
             position: relative;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: transform 0.3s ease;
+        }
+
+        .avatar:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .avatar::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent
+            );
+            transform: rotate(45deg);
+            animation: shimmer 3s infinite;
         }
 
         .avatar img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-        }
-
-        .avatar-placeholder {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 48px;
+            position: relative;
+            z-index: 1;
         }
 
         .status-dot {
@@ -126,21 +225,30 @@
             bottom: 5px;
             right: 5px;
             border: 4px solid rgba(30, 30, 30, 0.85);
+            animation: statusPulse 2s infinite;
         }
 
         .username {
             font-size: 32px;
             font-weight: 700;
             margin-bottom: 5px;
-            background: linear-gradient(90deg, #fff, #a8a8a8);
+            background: linear-gradient(90deg, #fff, #667eea, #764ba2, #fff);
+            background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            animation: shimmer 3s linear infinite, textGlow 2s ease-in-out infinite;
         }
 
         .userid {
             font-size: 14px;
             color: #b9bbbe;
             margin-bottom: 20px;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .userid:hover {
+            opacity: 1;
         }
 
         .badges {
@@ -149,6 +257,7 @@
             margin-bottom: 30px;
             flex-wrap: wrap;
             justify-content: center;
+            animation: fadeInUp 1.2s ease 0.4s backwards;
         }
 
         .badge {
@@ -160,11 +269,33 @@
             font-weight: 600;
             color: #5865f2;
             transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .badge::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .badge:hover::before {
+            width: 300px;
+            height: 300px;
         }
 
         .badge:hover {
             background: rgba(88, 101, 242, 0.4);
-            transform: translateY(-2px);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(88, 101, 242, 0.3);
         }
 
         .badge.nitro {
@@ -173,16 +304,18 @@
             background: rgba(255, 115, 250, 0.2);
         }
 
-        .badge.booster {
-            color: #f47fff;
-            border-color: rgba(244, 127, 255, 0.5);
-            background: rgba(244, 127, 255, 0.2);
+        .badge.nitro:hover {
+            box-shadow: 0 10px 25px rgba(255, 115, 250, 0.3);
         }
 
         .badge.dev {
             color: #3ba55d;
             border-color: rgba(59, 165, 93, 0.5);
             background: rgba(59, 165, 93, 0.2);
+        }
+
+        .badge.dev:hover {
+            box-shadow: 0 10px 25px rgba(59, 165, 93, 0.3);
         }
 
         .badge.early {
@@ -198,6 +331,15 @@
             margin-top: 20px;
             border: 1px solid rgba(255, 255, 255, 0.05);
             text-align: center;
+            transition: all 0.3s ease;
+            animation: fadeInUp 1.4s ease 0.6s backwards;
+        }
+
+        .bio-section:hover {
+            background: rgba(20, 20, 20, 0.8);
+            border-color: rgba(102, 126, 234, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
         }
 
         .bio-title {
@@ -221,6 +363,12 @@
             padding: 10px;
             border-radius: 8px;
             display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .contact-info:hover {
+            background: rgba(0, 0, 0, 0.5);
+            transform: scale(1.05);
         }
 
         .contact-label {
@@ -234,6 +382,32 @@
             padding: 25px;
             margin-top: 20px;
             border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            animation: fadeInUp 1.6s ease 0.8s backwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .song-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .song-section:hover::before {
+            left: 100%;
+        }
+
+        .song-section:hover {
+            background: rgba(20, 20, 20, 0.8);
+            border-color: rgba(240, 147, 251, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(240, 147, 251, 0.2);
         }
 
         .song-header {
@@ -262,6 +436,13 @@
             flex-shrink: 0;
             box-shadow: 0 10px 30px rgba(240, 147, 251, 0.3);
             overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .song-cover:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 15px 40px rgba(240, 147, 251, 0.5);
         }
 
         .song-cover img {
@@ -292,12 +473,42 @@
             color: #8e9297;
         }
 
+        .visualizer {
+            display: flex;
+            align-items: flex-end;
+            gap: 3px;
+            height: 40px;
+            margin-top: 10px;
+        }
+
+        .bar {
+            width: 4px;
+            background: linear-gradient(to top, #667eea, #764ba2);
+            border-radius: 2px;
+            animation: musicBar 0.8s ease-in-out infinite;
+        }
+
+        .bar:nth-child(1) { animation-delay: 0s; }
+        .bar:nth-child(2) { animation-delay: 0.1s; }
+        .bar:nth-child(3) { animation-delay: 0.2s; }
+        .bar:nth-child(4) { animation-delay: 0.3s; }
+        .bar:nth-child(5) { animation-delay: 0.4s; }
+        .bar:nth-child(6) { animation-delay: 0.3s; }
+        .bar:nth-child(7) { animation-delay: 0.2s; }
+        .bar:nth-child(8) { animation-delay: 0.1s; }
+
+        @keyframes musicBar {
+            0%, 100% { height: 10px; }
+            50% { height: 35px; }
+        }
+
         .social-links {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
             margin-top: 30px;
             justify-content: center;
+            animation: fadeInUp 1.8s ease 1s backwards;
         }
 
         .social-link {
@@ -313,21 +524,38 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-link::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translate(-50%, -50%);
+            transition: width 0.5s, height 0.5s;
+        }
+
+        .social-link:hover::before {
+            width: 300px;
+            height: 300px;
         }
 
         .social-link:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
-        .social-link.roblox { border-color: rgba(228, 0, 70, 0.5); color: #ff4458; }
-        .social-link.spotify { border-color: rgba(30, 215, 96, 0.5); color: #1ed760; }
-        .social-link.discord { border-color: rgba(88, 101, 242, 0.5); color: #5865f2; }
-        .social-link.youtube { border-color: rgba(255, 0, 0, 0.5); color: #ff0000; }
-        .social-link.twitter { border-color: rgba(29, 155, 240, 0.5); color: #1da1f2; }
-        .social-link.instagram { border-color: rgba(193, 53, 132, 0.5); color: #c13584; }
-        .social-link.github { border-color: rgba(136, 136, 136, 0.5); color: #888; }
+        .social-link.discord:hover { box-shadow: 0 10px 30px rgba(88, 101, 242, 0.4); border-color: #5865f2; }
+        .social-link.spotify:hover { box-shadow: 0 10px 30px rgba(30, 215, 96, 0.4); border-color: #1ed760; }
+        .social-link.roblox:hover { box-shadow: 0 10px 30px rgba(228, 0, 70, 0.4); border-color: #e40046; }
+        .social-link.youtube:hover { box-shadow: 0 10px 30px rgba(255, 0, 0, 0.4); border-color: #ff0000; }
 
         .music-control {
             position: fixed;
@@ -335,23 +563,44 @@
             right: 20px;
             width: 60px;
             height: 60px;
-            background: rgba(88, 101, 242, 0.9);
+            background: linear-gradient(135deg, #667eea, #764ba2);
             border-radius: 50%;
             border: none;
             color: white;
             font-size: 24px;
             cursor: pointer;
-            box-shadow: 0 5px 20px rgba(88, 101, 242, 0.5);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.5);
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 1000;
+            animation: pulse 2s infinite;
         }
 
         .music-control:hover {
-            transform: scale(1.1);
-            background: rgba(88, 101, 242, 1);
+            transform: scale(1.2) rotate(90deg);
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.8);
+        }
+
+        .music-control:active {
+            transform: scale(0.95);
+        }
+
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: scale(0);
+            animation: rippleEffect 0.6s ease-out;
+            pointer-events: none;
+        }
+
+        @keyframes rippleEffect {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
         }
 
         .connecting {
@@ -363,6 +612,7 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
+            animation: fadeInUp 2s ease 1.2s backwards;
         }
 
         .loading-dots {
@@ -387,6 +637,15 @@
         }
 
         @media (max-width: 600px) {
+            body {
+                cursor: auto;
+            }
+            
+            .cursor-glow,
+            .cursor-dot {
+                display: none;
+            }
+            
             .container {
                 padding: 30px 20px;
             }
@@ -398,7 +657,11 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <div id="particles"></div>
+    <div class="cursor-glow"></div>
+    <div class="cursor-dot"></div>
+
+    <div class="container" id="mainContainer">
         <div class="profile-section">
             <div class="avatar">
                 <img src="https://cdn.discordapp.com/attachments/1425518607668088836/1440089180708278272/MLdZLqb.jpg?ex=691ce310&is=691b9190&hm=71b7a945b3f08a9e49c39d45d094f02373b757987c0545fc82681fe6cefd0247&" alt="Avatar">
@@ -409,12 +672,11 @@
         </div>
 
         <div class="badges">
-            <div class="badge nitro">Nitro</div>
-            <div class="badge dev">Active Dev</div>
-            <div class="badge early">HypeSquad Early</div>
+            <div class="badge nitro">💎 Nitro</div>
+            <div class="badge dev">⚡ Active Dev</div>
+            <div class="badge early">🎉 HypeSquad Early</div>
         </div>
 
-        <!-- Bio Section -->
         <div class="bio-section">
             <div class="bio-title">💼 Skript Developer</div>
             <div class="bio-text">
@@ -427,7 +689,7 @@
         </div>
 
         <div class="song-section">
-            <div class="song-header">patentt's Song of Choice</div>
+            <div class="song-header">🎵 patentt's Song of Choice</div>
             <div class="song-info">
                 <div class="song-cover">
                     <img src="https://cdn.discordapp.com/attachments/1425518607668088836/1440089406269821041/87KiQLH.png?ex=691ce346&is=691b91c6&hm=41064b1af8cd830851f3dd40bea3a65c77350c4f3c3f0e5d4e39ac9d4f5065f0&" alt="Album Cover">
@@ -436,11 +698,20 @@
                     <div class="song-title">COMË N GO</div>
                     <div class="song-artist">by Yeat</div>
                     <div class="song-album">DANGEROUS SUMMER • 2025</div>
+                    <div class="visualizer">
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Social Links Section -->
         <div class="social-links">
             <a href="https://www.roblox.com/users/YOUR_ID" class="social-link roblox" target="_blank">
                 🎮 Roblox
@@ -454,13 +725,6 @@
             <a href="https://youtube.com/@YOUR_CHANNEL" class="social-link youtube" target="_blank">
                 📺 YouTube
             </a>
-            <a href="https://twitter.com/YOUR_USERNAME" class="social-link twitter" target="_blank">
-                🐦 Twitter
-            </a>
-            <a href="https://instagram.com/YOUR_USERNAME" class="social-link instagram" target="_blank">
-                📸 Instagram
-            </a>
-            <!-- Add more links as needed -->
         </div>
 
         <div class="connecting">
@@ -473,42 +737,42 @@
         </div>
     </div>
 
-    <!-- Background Music -->
     <audio id="bgMusic" loop>
         <source src="https://patentt98.github.io/patenttt/song.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Music Control Button -->
     <button class="music-control" id="musicToggle">🔇</button>
 
     <script>
-        // Music control
-        const audio = document.getElementById('bgMusic');
-        const musicToggle = document.getElementById('musicToggle');
-        let isPlaying = false;
+        // Particle system
+        const particlesContainer = document.getElementById('particles');
+        const particleCount = 50;
 
-        musicToggle.addEventListener('click', () => {
-            if (isPlaying) {
-                audio.pause();
-                musicToggle.textContent = '🔇';
-            } else {
-                audio.play();
-                musicToggle.textContent = '🔊';
-            }
-            isPlaying = !isPlaying;
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 20 + 's';
+            particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Custom cursor
+        const cursorGlow = document.querySelector('.cursor-glow');
+        const cursorDot = document.querySelector('.cursor-dot');
+
+        document.addEventListener('mousemove', (e) => {
+            cursorDot.style.left = e.clientX + 'px';
+            cursorDot.style.top = e.clientY + 'px';
+            
+            setTimeout(() => {
+                cursorGlow.style.left = (e.clientX - 15) + 'px';
+                cursorGlow.style.top = (e.clientY - 15) + 'px';
+            }, 50);
         });
 
-        // Auto-play attempt (may be blocked by browser)
-        window.addEventListener('load', () => {
-            audio.volume = 0.3; // Set volume to 30%
-            audio.play().then(() => {
-                isPlaying = true;
-                musicToggle.textContent = '🔊';
-            }).catch(() => {
-                // Auto-play blocked, user needs to click button
-                console.log('Auto-play blocked. Click the button to play music.');
-            });
-        });
-    </script>
-</body>
-</html>
+        // 3D tilt effect
+        const container = document.getElementById('mainContainer');
+        
+        container.addEventListener('mousem
