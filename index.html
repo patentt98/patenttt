@@ -164,6 +164,43 @@
             background: rgba(88, 101, 242, 0.2);
         }
 
+        .bio-section {
+            background: rgba(20, 20, 20, 0.6);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+        }
+
+        .bio-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .bio-text {
+            font-size: 14px;
+            color: #b9bbbe;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .contact-info {
+            font-size: 13px;
+            color: #8e9297;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        .contact-label {
+            color: #5865f2;
+            font-weight: 600;
+        }
+
         .song-section {
             background: rgba(20, 20, 20, 0.6);
             border-radius: 15px;
@@ -195,7 +232,7 @@
             align-items: center;
             justify-content: center;
             font-size: 36px;
-            animation: float 3s ease-in-out infinite;
+            flex-shrink: 0;
             box-shadow: 0 10px 30px rgba(240, 147, 251, 0.3);
             overflow: hidden;
         }
@@ -337,9 +374,8 @@
     <div class="container">
         <div class="profile-section">
             <div class="avatar">
-                <!-- Replace with your Discord avatar URL -->
-                <div class="avatar-placeholder">🎵</div>
-                <!-- <img src="YOUR_DISCORD_AVATAR_URL" alt="Avatar"> -->
+                <!-- Yeat PFP - Replace with actual Yeat image URL -->
+                <img src="https://i.scdn.co/image/ab6761610000e5eb0372b41e18f8b14c03ab9c9b" alt="Avatar">
                 <div class="status-dot"></div>
             </div>
             <div class="username">patentt</div>
@@ -348,18 +384,28 @@
 
         <div class="badges">
             <div class="badge nitro">Nitro</div>
-            <div class="badge booster">Booster</div>
             <div class="badge dev">Active Dev</div>
             <div class="badge early">HypeSquad Early</div>
         </div>
 
+        <!-- Bio Section -->
+        <div class="bio-section">
+            <div class="bio-title">💼 Skript Developer</div>
+            <div class="bio-text">
+                Professional Minecraft Skript maker currently selling custom skripts. 
+                Need a custom solution? Contact me on Discord!
+            </div>
+            <div class="contact-info">
+                <span class="contact-label">Contact:</span> patentt or 1373302089068969986
+            </div>
+        </div>
+
         <div class="song-section">
-            <div class="song-header">Patentt's Song of Choice</div>
+            <div class="song-header">patentt's Song of Choice</div>
             <div class="song-info">
                 <div class="song-cover">
-                    <!-- Add album art URL here -->
-                    🌟
-                    <!-- <img src="ALBUM_ART_URL" alt="Album Cover"> -->
+                    <!-- Yeat album art -->
+                    <img src="https://i.scdn.co/image/ab67616d0000b2730d78c55a71a96a36e826bce2" alt="Album Cover">
                 </div>
                 <div class="song-details">
                     <div class="song-title">COMË N GO</div>
@@ -404,7 +450,6 @@
 
     <!-- Background Music -->
     <audio id="bgMusic" loop>
-        <!-- Replace with your song URL - can be MP3, direct link, or YouTube embed -->
         <source src="https://patentt98.github.io/patenttt/song.mp3" type="audio/mpeg">
     </audio>
 
