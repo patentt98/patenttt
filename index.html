@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@patentt</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(-45deg, #0a0a0a, #1a1a2e, #16213e, #0f3460);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            width: 100%;
+            background: rgba(30, 30, 30, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-bottom: 20px;
+            animation: pulse 3s ease-in-out infinite;
+            box-shadow: 0 0 40px rgba(102, 126, 234, 0.5);
+            position: relative;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .avatar-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+
+        .status-dot {
+            width: 30px;
+            height: 30px;
+            background: #43b581;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            border: 4px solid rgba(30, 30, 30, 0.85);
+        }
+
+        .username {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            background: linear-gradient(90deg, #fff, #a8a8a8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .userid {
+            font-size: 14px;
+            color: #b9bbbe;
+            margin-bottom: 20px;
+        }
+
+        .badges {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .badge {
+            padding: 8px 16px;
+            background: rgba(88, 101, 242, 0.2);
+            border: 1px solid rgba(88, 101, 242, 0.5);
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #5865f2;
+            transition: all 0.3s ease;
+        }
+
+        .badge:hover {
+            background: rgba(88, 101, 242, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .badge.nitro {
+            color: #ff73fa;
+            border-color: rgba(255, 115, 250, 0.5);
+            background: rgba(255, 115, 250, 0.2);
+        }
+
+        .badge.booster {
+            color: #f47fff;
+            border-color: rgba(244, 127, 255, 0.5);
+            background: rgba(244, 127, 255, 0.2);
+        }
+
+        .badge.dev {
+            color: #3ba55d;
+            border-color: rgba(59, 165, 93, 0.5);
+            background: rgba(59, 165, 93, 0.2);
+        }
+
+        .badge.early {
+            color: #5865f2;
+            border-color: rgba(88, 101, 242, 0.5);
+            background: rgba(88, 101, 242, 0.2);
+        }
+
+        .song-section {
+            background: rgba(20, 20, 20, 0.6);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .song-header {
+            font-size: 14px;
+            color: #b9bbbe;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .song-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .song-cover {
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            animation: float 3s ease-in-out infinite;
+            box-shadow: 0 10px 30px rgba(240, 147, 251, 0.3);
+            overflow: hidden;
+        }
+
+        .song-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .song-details {
+            flex: 1;
+        }
+
+        .song-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+
+        .song-artist {
+            font-size: 14px;
+            color: #b9bbbe;
+            margin-bottom: 5px;
+        }
+
+        .song-album {
+            font-size: 12px;
+            color: #8e9297;
+        }
+
+        .social-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 30px;
+            justify-content: center;
+        }
+
+        .social-link {
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            text-decoration: none;
+            color: #fff;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .social-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .social-link.roblox { border-color: rgba(228, 0, 70, 0.5); color: #ff4458; }
+        .social-link.spotify { border-color: rgba(30, 215, 96, 0.5); color: #1ed760; }
+        .social-link.discord { border-color: rgba(88, 101, 242, 0.5); color: #5865f2; }
+        .social-link.youtube { border-color: rgba(255, 0, 0, 0.5); color: #ff0000; }
+        .social-link.twitter { border-color: rgba(29, 155, 240, 0.5); color: #1da1f2; }
+        .social-link.instagram { border-color: rgba(193, 53, 132, 0.5); color: #c13584; }
+        .social-link.github { border-color: rgba(136, 136, 136, 0.5); color: #888; }
+
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: rgba(88, 101, 242, 0.9);
+            border-radius: 50%;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(88, 101, 242, 0.5);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .music-control:hover {
+            transform: scale(1.1);
+            background: rgba(88, 101, 242, 1);
+        }
+
+        .connecting {
+            text-align: center;
+            color: #72767d;
+            font-size: 13px;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .loading-dots {
+            display: flex;
+            gap: 5px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: #72767d;
+            border-radius: 50%;
+            animation: pulse 1.4s ease-in-out infinite;
+        }
+
+        .dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            .username {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile-section">
+            <div class="avatar">
+                <!-- Replace with your Discord avatar URL -->
+                <div class="avatar-placeholder">🎵</div>
+                <!-- <img src="YOUR_DISCORD_AVATAR_URL" alt="Avatar"> -->
+                <div class="status-dot"></div>
+            </div>
+            <div class="username">patentt</div>
+            <div class="userid">1373302089068969986</div>
+        </div>
+
+        <div class="badges">
+            <div class="badge nitro">Nitro</div>
+            <div class="badge booster">Booster</div>
+            <div class="badge dev">Active Dev</div>
+            <div class="badge early">HypeSquad Early</div>
+        </div>
+
+        <div class="song-section">
+            <div class="song-header">patentt's Song of Choice</div>
+            <div class="song-info">
+                <div class="song-cover">
+                    <!-- Add album art URL here -->
+                    🌟
+                    <!-- <img src="ALBUM_ART_URL" alt="Album Cover"> -->
+                </div>
+                <div class="song-details">
+                    <div class="song-title">COMË N GO</div>
+                    <div class="song-artist">by Yeat</div>
+                    <div class="song-album">DANGEROUS SUMMER • 2025</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Social Links Section -->
+        <div class="social-links">
+            <a href="https://www.roblox.com/users/YOUR_ID" class="social-link roblox" target="_blank">
+                🎮 Roblox
+            </a>
+            <a href="https://open.spotify.com/user/YOUR_USERNAME" class="social-link spotify" target="_blank">
+                🎵 Spotify
+            </a>
+            <a href="https://discord.com/users/1373302089068969986" class="social-link discord" target="_blank">
+                💬 Discord
+            </a>
+            <a href="https://youtube.com/@YOUR_CHANNEL" class="social-link youtube" target="_blank">
+                📺 YouTube
+            </a>
+            <a href="https://twitter.com/YOUR_USERNAME" class="social-link twitter" target="_blank">
+                🐦 Twitter
+            </a>
+            <a href="https://instagram.com/YOUR_USERNAME" class="social-link instagram" target="_blank">
+                📸 Instagram
+            </a>
+            <!-- Add more links as needed -->
+        </div>
+
+        <div class="connecting">
+            <span>Connecting</span>
+            <div class="loading-dots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Background Music -->
+    <audio id="bgMusic" loop>
+        <!-- Replace with your song URL - can be MP3, direct link, or YouTube embed -->
+        <source src="YOUR_SONG_URL.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Music Control Button -->
+    <button class="music-control" id="musicToggle">🔇</button>
+
+    <script>
+        // Music control
+        const audio = document.getElementById('bgMusic');
+        const musicToggle = document.getElementById('musicToggle');
+        let isPlaying = false;
+
+        musicToggle.addEventListener('click', () => {
+            if (isPlaying) {
+                audio.pause();
+                musicToggle.textContent = '🔇';
+            } else {
+                audio.play();
+                musicToggle.textContent = '🔊';
+            }
+            isPlaying = !isPlaying;
+        });
+
+        // Auto-play attempt (may be blocked by browser)
+        window.addEventListener('load', () => {
+            audio.volume = 0.3; // Set volume to 30%
+            audio.play().then(() => {
+                isPlaying = true;
+                musicToggle.textContent = '🔊';
+            }).catch(() => {
+                // Auto-play blocked, user needs to click button
+                console.log('Auto-play blocked. Click the button to play music.');
+            });
+        });
+    </script>
+</body>
+</html>
