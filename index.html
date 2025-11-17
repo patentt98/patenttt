@@ -252,6 +252,9 @@
             overflow: hidden;
             border-radius: 20px 20px 0 0;
             z-index: 0;
+            background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c, #667eea);
+            background-size: 400% 400%;
+            animation: gradient 8s ease infinite;
         }
 
         .banner img {
@@ -259,6 +262,13 @@
             height: 100%;
             object-fit: cover;
             object-position: center;
+            display: block;
+        }
+
+        .banner img[src=""],
+        .banner img:not([src]),
+        .banner img[src*="expired"] {
+            display: none;
         }
 
         .banner::after {
@@ -296,7 +306,10 @@
             flex-direction: column;
             align-items: center;
             margin-bottom: 30px;
+            margin-top: 60px;
             animation: fadeInUp 1s ease 0.2s backwards;
+            position: relative;
+            z-index: 1;
         }
 
         .avatar {
@@ -795,6 +808,10 @@
     <div class="time-indicator" id="timeIndicator"></div>
 
     <div class="container" id="mainContainer">
+        <div class="banner">
+            <img src="https://patentt98.github.io/patenttt/banner.gif" alt="Banner" onerror="this.style.display='none'">
+        </div>
+        
         <div class="profile-section">
             <div class="avatar">
                 <img src="https://cdn.discordapp.com/attachments/1425518607668088836/1440089180708278272/MLdZLqb.jpg?ex=691ce310&is=691b9190&hm=71b7a945b3f08a9e49c39d45d094f02373b757987c0545fc82681fe6cefd0247&" alt="Avatar">
