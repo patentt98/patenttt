@@ -772,6 +772,41 @@
             backdrop-filter: blur(10px);
         }
 
+        .visitor-counter {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            padding: 12px 20px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 12px;
+            font-size: 14px;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .visitor-counter:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .visitor-counter .count {
+            color: #667eea;
+            font-weight: 700;
+            font-size: 18px;
+            animation: textGlow 2s ease-in-out infinite;
+        }
+
+        .visitor-counter .label {
+            color: #b9bbbe;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
         @media (max-width: 600px) {
             body {
                 cursor: auto;
@@ -806,6 +841,10 @@
     <div class="cursor-glow" style="display: none;"></div>
     <div class="cursor-dot" style="display: none;"></div>
     <div class="time-indicator" id="timeIndicator"></div>
+    <div class="visitor-counter">
+        <div class="label">👁️ Total Views</div>
+        <div class="count" id="visitorCount">Loading...</div>
+    </div>
 
     <div class="container" id="mainContainer">
         <div class="banner">
@@ -1211,6 +1250,48 @@
 
         updateTimeTheme();
         setInterval(updateTimeTheme, 60000);
+
+        // Visitor Counter with CountAPI (works on GitHub Pages)
+        async function updateVisitorCount() {
+            try {
+                const visitorCountElement = document.getElementById('visitorCount');
+                
+                // Use CountAPI - free service that works anywhere
+                const namespace = 'patentt98';
+                const key = 'patenttt-visits';
+                const url = `https://api.countapi.xyz/hit/${namespace}/${key}`;
+                
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.value) {
+                    // Animate the count
+                    animateCount(visitorCountElement, data.value);
+                } else {
+                    visitorCountElement.textContent = '---';
+                }
+                
+            } catch (error) {
+                console.error('Visitor counter error:', error);
+                document.getElementById('visitorCount').textContent = '---';
+            }
+        }
+
+        function animateCount(element, targetCount) {
+            let current = Math.max(0, targetCount - 20);
+            const increment = Math.ceil(20 / 30);
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= targetCount) {
+                    current = targetCount;
+                    clearInterval(timer);
+                }
+                element.textContent = current.toLocaleString();
+            }, 30);
+        }
+
+        // Initialize visitor counter
+        updateVisitorCount();
 
         // Music control
         const audio = document.getElementById('bgMusic');
