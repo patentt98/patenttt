@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@patentt - Enhanced</title>
+    <title>@patentt - Ultimate Profile</title>
     <style>
         * {
             margin: 0;
@@ -46,11 +46,11 @@
         @keyframes slideIn {
             from {
                 opacity: 0;
-                transform: translateY(10px);
+                transform: translateX(-20px);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateX(0);
             }
         }
 
@@ -99,11 +99,6 @@
             100% { top: 100%; }
         }
 
-        @keyframes dnaRotate {
-            0% { transform: rotateY(0deg); }
-            100% { transform: rotateY(360deg); }
-        }
-
         @keyframes fireFade {
             0% {
                 transform: translateY(0) scale(1);
@@ -127,24 +122,41 @@
         }
 
         @keyframes glitch {
-            0% {
-                transform: translate(0);
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        @keyframes neonFlicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+                text-shadow: 
+                    0 0 10px rgba(255, 107, 53, 0.8),
+                    0 0 20px rgba(255, 107, 53, 0.6),
+                    0 0 30px rgba(255, 107, 53, 0.4),
+                    0 0 40px rgba(255, 107, 53, 0.2);
             }
-            20% {
-                transform: translate(-2px, 2px);
+            20%, 24%, 55% {
+                text-shadow: none;
             }
-            40% {
-                transform: translate(-2px, -2px);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
             }
-            60% {
-                transform: translate(2px, 2px);
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
-            80% {
-                transform: translate(2px, -2px);
-            }
-            100% {
-                transform: translate(0);
-            }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
         body {
@@ -154,18 +166,15 @@
             animation: gradient 8s ease infinite;
             color: #fff;
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             padding: 20px;
             position: relative;
-            overflow: hidden;
+            overflow-x: hidden;
             cursor: none;
         }
 
         body::before {
             content: '';
-            position: absolute;
+            position: fixed;
             width: 200%;
             height: 200%;
             background: 
@@ -173,14 +182,7 @@
                 radial-gradient(circle at 80% 80%, rgba(255, 81, 47, 0.15) 0%, transparent 50%),
                 radial-gradient(circle at 40% 20%, rgba(247, 147, 30, 0.15) 0%, transparent 50%);
             animation: float 20s ease-in-out infinite;
-        }
-
-        body.day-mode {
-            background: linear-gradient(-45deg, #87CEEB, #B0E0E6, #ADD8E6, #87CEFA, #B0E0E6, #E0F6FF);
-        }
-
-        body.evening-mode {
-            background: linear-gradient(-45deg, #FF6B35, #F7931E, #FDC830, #FF512F, #DD2476, #6A0572);
+            z-index: 0;
         }
 
         #matrix-canvas {
@@ -190,19 +192,8 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 0;
-            opacity: 0.2;
-        }
-
-        #dna-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.15;
+            z-index: 1;
+            opacity: 0.4;
         }
 
         #particles {
@@ -212,7 +203,7 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 0;
+            z-index: 1;
         }
 
         .particle {
@@ -269,63 +260,69 @@
             box-shadow: 0 0 15px rgba(255, 107, 53, 0.9);
         }
 
-        .container {
-            max-width: 700px;
-            width: 100%;
+        .main-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero-section {
+            text-align: center;
+            padding: 60px 20px;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .hero-title {
+            font-size: 72px;
+            font-weight: 900;
+            background: linear-gradient(90deg, #FF6B35, #FDC830, #F7931E, #FF6B35);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 3s linear infinite, neonFlicker 5s infinite;
+            letter-spacing: 4px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .hero-subtitle {
+            font-size: 24px;
+            color: #FDC830;
+            margin-bottom: 40px;
+            animation: slideIn 1s ease 0.3s backwards;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .card {
             background: rgba(20, 10, 10, 0.9);
             backdrop-filter: blur(20px);
             border-radius: 20px;
-            padding: 40px;
+            padding: 30px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7),
                         0 0 100px rgba(255, 107, 53, 0.1);
             border: 1px solid rgba(255, 107, 53, 0.2);
             position: relative;
-            z-index: 1;
-            transition: transform 0.3s ease-out;
-            animation: fadeInUp 0.8s ease;
+            overflow: hidden;
+            transition: all 0.3s ease;
             cursor: auto;
-            overflow: hidden;
+            animation: fadeInUp 1s ease backwards;
         }
 
-        .banner {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 120px;
-            overflow: hidden;
-            border-radius: 20px 20px 0 0;
-            z-index: 0;
-            background: linear-gradient(-45deg, #FF6B35, #F7931E, #FDC830, #FF512F, #FF6B35);
-            background-size: 400% 400%;
-            animation: gradient 8s ease infinite;
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9),
+                        0 0 150px rgba(255, 107, 53, 0.3);
+            border-color: rgba(255, 107, 53, 0.5);
         }
 
-        .banner img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-            display: block;
-        }
-
-        .banner img[src=""],
-        .banner img:not([src]),
-        .banner img[src*="expired"] {
-            display: none;
-        }
-
-        .banner::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 50px;
-            background: linear-gradient(to bottom, transparent, rgba(20, 10, 10, 0.9));
-        }
-
-        .container::before {
+        .card::before {
             content: '';
             position: absolute;
             top: -2px;
@@ -341,31 +338,49 @@
             animation: gradient 3s ease infinite;
         }
 
-        .container:hover::before {
+        .card:hover::before {
             opacity: 0.6;
         }
 
-        .profile-section {
+        .card-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #FF6B35;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-content {
+            color: #b9bbbe;
+            line-height: 1.6;
+        }
+
+        .profile-card {
+            grid-column: 1 / -1;
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            animation-delay: 0.2s;
+        }
+
+        .avatar-section {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-bottom: 30px;
-            margin-top: 60px;
-            animation: fadeInUp 1s ease 0.2s backwards;
-            position: relative;
-            z-index: 1;
+            gap: 20px;
         }
 
         .avatar {
-            width: 120px;
-            height: 120px;
+            width: 150px;
+            height: 150px;
             border-radius: 50%;
             overflow: hidden;
-            margin-bottom: 20px;
             position: relative;
             background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
             transition: transform 0.3s ease;
-            border: 3px solid rgba(255, 107, 53, 0.5);
+            border: 4px solid rgba(255, 107, 53, 0.5);
         }
 
         .avatar:hover {
@@ -399,57 +414,53 @@
         }
 
         .status-dot {
-            width: 30px;
-            height: 30px;
+            width: 35px;
+            height: 35px;
             background: #43b581;
             border-radius: 50%;
             position: absolute;
-            bottom: 5px;
-            right: 5px;
-            border: 4px solid rgba(20, 10, 10, 0.9);
+            bottom: 10px;
+            right: 10px;
+            border: 5px solid rgba(20, 10, 10, 0.9);
             animation: statusPulse 2s infinite;
         }
 
+        .profile-info {
+            flex: 1;
+        }
+
         .username {
-            font-size: 36px;
+            font-size: 48px;
             font-weight: 900;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
             background: linear-gradient(90deg, #FF6B35, #FDC830, #F7931E, #FF6B35);
             background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: shimmer 3s linear infinite, textGlow 2s ease-in-out infinite;
             letter-spacing: 2px;
-            text-transform: uppercase;
         }
 
         .userid {
-            font-size: 14px;
+            font-size: 16px;
             color: #b9bbbe;
             margin-bottom: 20px;
             opacity: 0.7;
-            transition: opacity 0.3s ease;
-        }
-
-        .userid:hover {
-            opacity: 1;
         }
 
         .badges {
             display: flex;
             gap: 10px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             flex-wrap: wrap;
-            justify-content: center;
-            animation: fadeInUp 1.2s ease 0.4s backwards;
         }
 
         .badge {
-            padding: 8px 16px;
+            padding: 10px 18px;
             background: rgba(255, 107, 53, 0.2);
             border: 1px solid rgba(255, 107, 53, 0.5);
             border-radius: 12px;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 600;
             color: #FF6B35;
             transition: all 0.3s ease;
@@ -478,7 +489,7 @@
 
         .badge:hover {
             background: rgba(255, 107, 53, 0.4);
-            transform: translateY(-5px) scale(1.05);
+            transform: translateY(-3px) scale(1.05);
             box-shadow: 0 10px 25px rgba(255, 107, 53, 0.4);
         }
 
@@ -488,18 +499,10 @@
             background: rgba(255, 115, 250, 0.2);
         }
 
-        .badge.nitro:hover {
-            box-shadow: 0 10px 25px rgba(255, 115, 250, 0.3);
-        }
-
         .badge.dev {
             color: #3ba55d;
             border-color: rgba(59, 165, 93, 0.5);
             background: rgba(59, 165, 93, 0.2);
-        }
-
-        .badge.dev:hover {
-            box-shadow: 0 10px 25px rgba(59, 165, 93, 0.3);
         }
 
         .badge.early {
@@ -508,66 +511,118 @@
             background: rgba(88, 101, 242, 0.2);
         }
 
-        .bio-section {
-            background: rgba(10, 5, 5, 0.7);
-            border-radius: 15px;
-            padding: 20px;
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
             margin-top: 20px;
-            border: 1px solid rgba(255, 107, 53, 0.2);
-            text-align: center;
-            transition: all 0.3s ease;
-            animation: fadeInUp 1.4s ease 0.6s backwards;
         }
 
-        .bio-section:hover {
-            background: rgba(10, 5, 5, 0.9);
-            border-color: rgba(255, 107, 53, 0.4);
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.2);
-        }
-
-        .bio-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: #FF6B35;
-            margin-bottom: 10px;
-        }
-
-        .bio-text {
-            font-size: 14px;
-            color: #b9bbbe;
-            line-height: 1.6;
-            margin-bottom: 15px;
-        }
-
-        .contact-info {
-            font-size: 13px;
-            color: #8e9297;
+        .stat-box {
             background: rgba(0, 0, 0, 0.4);
-            padding: 10px;
-            border-radius: 8px;
-            display: inline-block;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(255, 107, 53, 0.2);
             transition: all 0.3s ease;
         }
 
-        .contact-info:hover {
+        .stat-box:hover {
             background: rgba(0, 0, 0, 0.6);
+            border-color: rgba(255, 107, 53, 0.5);
             transform: scale(1.05);
         }
 
-        .contact-label {
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #FF6B35;
+            animation: textGlow 2s ease-in-out infinite;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #8e9297;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .skill-item {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 107, 53, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .skill-item:hover {
+            background: rgba(0, 0, 0, 0.6);
+            border-color: rgba(255, 107, 53, 0.5);
+            transform: translateX(5px);
+        }
+
+        .skill-name {
             color: #FF6B35;
             font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .skill-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .skill-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #FF6B35, #FDC830);
+            border-radius: 10px;
+            transition: width 2s ease;
+        }
+
+        .project-item {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 107, 53, 0.2);
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .project-item:hover {
+            background: rgba(0, 0, 0, 0.6);
+            border-color: rgba(255, 107, 53, 0.5);
+            transform: translateX(10px);
+        }
+
+        .project-title {
+            color: #FDC830;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .project-desc {
+            color: #b9bbbe;
+            font-size: 14px;
+            line-height: 1.6;
         }
 
         .song-section {
             background: rgba(10, 5, 5, 0.7);
             border-radius: 15px;
             padding: 25px;
-            margin-top: 20px;
             border: 1px solid rgba(255, 107, 53, 0.2);
             transition: all 0.3s ease;
-            animation: fadeInUp 1.6s ease 0.8s backwards;
             position: relative;
             overflow: hidden;
         }
@@ -590,12 +645,10 @@
         .song-section:hover {
             background: rgba(10, 5, 5, 0.9);
             border-color: rgba(255, 107, 53, 0.4);
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.3);
         }
 
         .song-header {
-            font-size: 14px;
+            font-size: 16px;
             color: #FF6B35;
             margin-bottom: 15px;
             text-transform: uppercase;
@@ -617,7 +670,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 36px;
             flex-shrink: 0;
             box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4);
             overflow: hidden;
@@ -628,7 +680,6 @@
 
         .song-cover:hover {
             transform: scale(1.1) rotate(5deg);
-            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.6);
         }
 
         .song-cover img {
@@ -646,7 +697,6 @@
             font-weight: 700;
             margin-bottom: 5px;
             color: #FF6B35;
-            text-transform: uppercase;
         }
 
         .song-artist {
@@ -685,16 +735,14 @@
         .bar:nth-child(8) { animation-delay: 0.1s; }
 
         .social-links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 30px;
-            justify-content: center;
-            animation: fadeInUp 1.8s ease 1s backwards;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
         }
 
         .social-link {
-            padding: 12px 20px;
+            padding: 15px 20px;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 107, 53, 0.3);
             border-radius: 12px;
@@ -705,6 +753,7 @@
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
             position: relative;
             overflow: hidden;
@@ -735,6 +784,60 @@
             border-color: #FF6B35;
         }
 
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+            margin-top: 20px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #FF6B35, #FDC830);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+            padding-left: 20px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -36px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            background: #FF6B35;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 107, 53, 0.8);
+            animation: pulse 2s infinite;
+        }
+
+        .timeline-date {
+            color: #FDC830;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .timeline-title {
+            color: #fff;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .timeline-desc {
+            color: #8e9297;
+            font-size: 14px;
+        }
+
         .music-control {
             position: fixed;
             bottom: 20px;
@@ -761,69 +864,23 @@
             box-shadow: 0 10px 40px rgba(255, 107, 53, 0.9);
         }
 
-        .music-control:active {
-            transform: scale(0.95);
-        }
-
-        .ripple {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.5);
-            transform: scale(0);
-            animation: rippleEffect 0.6s ease-out;
-            pointer-events: none;
-        }
-
-        .connecting {
-            text-align: center;
-            color: #FF6B35;
-            font-size: 13px;
-            margin-top: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            min-height: 24px;
-            animation: fadeInUp 2s ease 1.2s backwards;
-        }
-
-        .status-text {
-            animation: slideIn 0.5s ease;
-            font-weight: 600;
-        }
-
-        .loading-dots {
-            display: flex;
-            gap: 5px;
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            background: #FF6B35;
-            border-radius: 50%;
-            animation: pulse 1.4s ease-in-out infinite;
-        }
-
-        .dot:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .dot:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-
         .time-indicator {
             position: fixed;
             top: 20px;
             left: 20px;
-            padding: 10px 20px;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 10px;
+            padding: 12px 20px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 12px;
             font-size: 14px;
             z-index: 1000;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 107, 53, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .time-indicator:hover {
+            transform: scale(1.05);
+            border-color: rgba(255, 107, 53, 0.5);
         }
 
         .visitor-counter {
@@ -861,7 +918,33 @@
             letter-spacing: 1px;
         }
 
-        @media (max-width: 600px) {
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            background: rgba(0, 0, 0, 0.5);
+            transform: translateX(5px);
+        }
+
+        .contact-icon {
+            color: #FF6B35;
+            font-size: 20px;
+        }
+
+        .contact-text {
+            color: #b9bbbe;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
             body {
                 cursor: auto;
             }
@@ -871,26 +954,35 @@
                 display: none;
             }
             
-            .container {
-                padding: 30px 20px;
+            .hero-title {
+                font-size: 36px;
             }
-            
-            .username {
-                font-size: 24px;
-            }
-        }
 
-        @media (min-width: 601px) {
-            .cursor-glow,
-            .cursor-dot {
-                display: block;
+            .hero-subtitle {
+                font-size: 18px;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-card {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .username {
+                font-size: 32px;
             }
         }
     </style>
 </head>
 <body>
     <canvas id="matrix-canvas"></canvas>
-    <canvas id="dna-canvas"></canvas>
     <div id="particles"></div>
     <div class="cursor-glow" style="display: none;"></div>
     <div class="cursor-dot" style="display: none;"></div>
@@ -900,82 +992,209 @@
         <div class="count" id="visitorCount">Loading...</div>
     </div>
 
-    <div class="container" id="mainContainer">
-        <div class="banner">
-            <img src="https://patentt98.github.io/patenttt/banner.gif" alt="Banner" onerror="this.style.display='none'">
-        </div>
-        
-        <div class="profile-section">
-            <div class="avatar">
-                <img src="https://cdn.discordapp.com/attachments/1425518607668088836/1440089180708278272/MLdZLqb.jpg?ex=691ce310&is=691b9190&hm=71b7a945b3f08a9e49c39d45d094f02373b757987c0545fc82681fe6cefd0247&" alt="Avatar">
-                <div class="status-dot"></div>
-            </div>
-            <div class="username">patentt</div>
-            <div class="userid">1373302089068969986</div>
+    <div class="main-wrapper">
+        <div class="hero-section">
+            <h1 class="hero-title">PATENTT</h1>
+            <p class="hero-subtitle">🔥 Professional Skript Developer & Creative Designer 🔥</p>
         </div>
 
-        <div class="badges">
-            <div class="badge nitro">💎 Nitro</div>
-            <div class="badge dev">⚡ Active Dev</div>
-            <div class="badge early">🎉 HypeSquad Early</div>
-        </div>
-
-        <div class="bio-section">
-            <div class="bio-title">💼 Skript Developer</div>
-            <div class="bio-text">
-                Professional Minecraft Skript maker currently selling custom skripts. 
-                Need a custom solution? Contact me on Discord!
-            </div>
-            <div class="contact-info">
-                <span class="contact-label">Contact:</span> patentt or 1373302089068969986
-            </div>
-        </div>
-
-        <div class="song-section">
-            <div class="song-header">🎵 patentt's Song of Choice</div>
-            <div class="song-info">
-                <div class="song-cover">
-                    <img src="https://cdn.discordapp.com/attachments/1425518607668088836/1440089406269821041/87KiQLH.png?ex=691ce346&is=691b91c6&hm=41064b1af8cd830851f3dd40bea3a65c77350c4f3c3f0e5d4e39ac9d4f5065f0&" alt="Album Cover">
+        <div class="content-grid">
+            <!-- Profile Card -->
+            <div class="card profile-card">
+                <div class="avatar-section">
+                    <div class="avatar">
+                        <img src="https://cdn.discordapp.com/attachments/1425518607668088836/1440089180708278272/MLdZLqb.jpg?ex=691ce310&is=691b9190&hm=71b7a945b3f08a9e49c39d45d094f02373b757987c0545fc82681fe6cefd0247&" alt="Avatar">
+                        <div class="status-dot"></div>
+                    </div>
                 </div>
-                <div class="song-details">
-                    <div class="song-title">COMË N GO</div>
-                    <div class="song-artist">by Yeat</div>
-                    <div class="song-album">DANGEROUS SUMMER • 2025</div>
-                    <div class="visualizer">
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
+                
+                <div class="profile-info">
+                    <div class="username">patentt</div>
+                    <div class="userid">ID: 1373302089068969986</div>
+                    
+                    <div class="badges">
+                        <div class="badge nitro">💎 Nitro</div>
+                        <div class="badge dev">⚡ Active Dev</div>
+                        <div class="badge early">🎉 HypeSquad Early</div>
+                        <div class="badge">🎮 Gamer</div>
+                        <div class="badge">💻 Coder</div>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <div class="stat-value">50+</div>
+                            <div class="stat-label">Projects</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value">100+</div>
+                            <div class="stat-label">Clients</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value">3+</div>
+                            <div class="stat-label">Years Exp</div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="social-links">
-            <a href="https://www.roblox.com/users/YOUR_ID" class="social-link roblox" target="_blank">
-                🎮 Roblox
-            </a>
-            <a href="https://open.spotify.com/user/YOUR_USERNAME" class="social-link spotify" target="_blank">
-                🎵 Spotify
-            </a>
-            <a href="https://discord.com/users/1373302089068969986" class="social-link discord" target="_blank">
-                💬 Discord
-            </a>
-            <a href="https://youtube.com/@YOUR_CHANNEL" class="social-link youtube" target="_blank">
-                📺 YouTube
-            </a>
-        </div>
+            <!-- About Me -->
+            <div class="card" style="animation-delay: 0.4s;">
+                <div class="card-title">💼 About Me</div>
+                <div class="card-content">
+                    Professional Minecraft Skript developer with over 3 years of experience. 
+                    Specializing in custom plugins, server configurations, and complex game mechanics. 
+                    I bring your ideas to life with clean, efficient code.
+                </div>
+            </div>
 
-        <div class="connecting">
-            <span class="status-text" id="statusText">Listening to music</span>
-            <div class="loading-dots">
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
+            <!-- Skills -->
+            <div class="card" style="animation-delay: 0.6s;">
+                <div class="card-title">⚡ Skills</div>
+                <div class="skills-grid">
+                    <div class="skill-item">
+                        <div class="skill-name">Skript</div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 95%;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">Java</div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 80%;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">Web Dev</div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 85%;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">Design</div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 90%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact -->
+            <div class="card" style="animation-delay: 0.8s;">
+                <div class="card-title">📞 Contact Me</div>
+                <div class="card-content">
+                    <div class="contact-item">
+                        <div class="contact-icon">💬</div>
+                        <div class="contact-text">Discord: patentt</div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">📧</div>
+                        <div class="contact-text">gabrielpestritu34@yahoo.com</div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">🆔</div>
+                        <div class="contact-text">ID: 1373302089068969986</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Services -->
+            <div class="card" style="animation-delay: 1s;">
+                <div class="card-title">🛠️ Services</div>
+                <div class="card-content">
+                    <div class="project-item">
+                        <div class="project-title">Custom Skripts</div>
+                        <div class="project-desc">
+                            Fully customized Minecraft skripts tailored to your server's needs. 
+                            From simple mechanics to complex systems.
+                        </div>
+                    </div>
+                    <div class="project-item">
+                        <div class="project-title">Server Setup</div>
+                        <div class="project-desc">
+                            Complete server configuration and optimization for maximum performance.
+                        </div>
+                    </div>
+                    <div class="project-item">
+                        <div class="project-title">Bug Fixes</div>
+                        <div class="project-desc">
+                            Quick and reliable debugging services to keep your server running smoothly.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Currently Playing -->
+            <div class="card" style="animation-delay: 1.2s;">
+                <div class="card-title">🎵 Now Playing</div>
+                <div class="song-section">
+                    <div class="song-info">
+                        <div class="song-cover">
+                            <img src="https://cdn.discordapp.com/attachments/1425518607668088836/1440089406269821041/87KiQLH.png?ex=691ce346&is=691b91c6&hm=41064b1af8cd830851f3dd40bea3a65c77350c4f3c3f0e5d4e39ac9d4f5065f0&" alt="Album Cover">
+                        </div>
+                        <div class="song-details">
+                            <div class="song-title">COMË N GO</div>
+                            <div class="song-artist">by Yeat</div>
+                            <div class="song-album">DANGEROUS SUMMER • 2025</div>
+                            <div class="visualizer">
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Timeline -->
+            <div class="card" style="animation-delay: 1.4s;">
+                <div class="card-title">📅 Journey</div>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-date">2025 - Present</div>
+                        <div class="timeline-title">Professional Developer</div>
+                        <div class="timeline-desc">Running custom skript services with 100+ satisfied clients</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2023 - 2024</div>
+                        <div class="timeline-title">Advanced Skripting</div>
+                        <div class="timeline-desc">Mastered complex systems and server optimization</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2022</div>
+                        <div class="timeline-title">Started Journey</div>
+                        <div class="timeline-desc">Began learning Skript and Minecraft development</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Social Links -->
+            <div class="card" style="animation-delay: 1.6s; grid-column: 1 / -1;">
+                <div class="card-title">🌐 Connect With Me</div>
+                <div class="social-links">
+                    <a href="https://discord.com/users/1373302089068969986" class="social-link" target="_blank">
+                        💬 Discord
+                    </a>
+                    <a href="https://www.roblox.com/users/YOUR_ID" class="social-link" target="_blank">
+                        🎮 Roblox
+                    </a>
+                    <a href="https://open.spotify.com/user/YOUR_USERNAME" class="social-link" target="_blank">
+                        🎵 Spotify
+                    </a>
+                    <a href="https://youtube.com/@YOUR_CHANNEL" class="social-link" target="_blank">
+                        📺 YouTube
+                    </a>
+                    <a href="https://github.com/YOUR_USERNAME" class="social-link" target="_blank">
+                        💻 GitHub
+                    </a>
+                    <a href="https://twitter.com/YOUR_USERNAME" class="social-link" target="_blank">
+                        🐦 Twitter
+                    </a>
+                </div>
             </div>
         </div>
     </div>
@@ -987,14 +1206,14 @@
     <button class="music-control" id="musicToggle">🔇</button>
 
     <script>
-        // Matrix Rain Effect (Yeat colors)
+        // Matrix Rain Effect
         const matrixCanvas = document.getElementById('matrix-canvas');
         const matrixCtx = matrixCanvas.getContext('2d');
 
         matrixCanvas.width = window.innerWidth;
         matrixCanvas.height = window.innerHeight;
 
-        const matrixChars = 'YEAT$MONEY¥€£₿';
+        const matrixChars = 'YEAT$MONEY¥€£₿PATENTT';
         const fontSize = 14;
         const columns = matrixCanvas.width / fontSize;
         const drops = [];
@@ -1023,79 +1242,14 @@
 
         setInterval(drawMatrix, 35);
 
-        // DNA Helix Effect (Yeat colors)
-        const dnaCanvas = document.getElementById('dna-canvas');
-        const dnaCtx = dnaCanvas.getContext('2d');
-
-        dnaCanvas.width = window.innerWidth;
-        dnaCanvas.height = window.innerHeight;
-
-        let dnaOffset = 0;
-
-        function drawDNA() {
-            dnaCtx.clearRect(0, 0, dnaCanvas.width, dnaCanvas.height);
-            
-            const centerX = dnaCanvas.width / 2;
-            const amplitude = 100;
-            const frequency = 0.02;
-            
-            dnaCtx.strokeStyle = 'rgba(255, 107, 53, 0.5)';
-            dnaCtx.lineWidth = 2;
-
-            // Left strand
-            dnaCtx.beginPath();
-            for (let y = 0; y < dnaCanvas.height; y += 5) {
-                const x = centerX + Math.sin(y * frequency + dnaOffset) * amplitude;
-                if (y === 0) {
-                    dnaCtx.moveTo(x, y);
-                } else {
-                    dnaCtx.lineTo(x, y);
-                }
-            }
-            dnaCtx.stroke();
-
-            // Right strand
-            dnaCtx.beginPath();
-            dnaCtx.strokeStyle = 'rgba(247, 147, 30, 0.5)';
-            for (let y = 0; y < dnaCanvas.height; y += 5) {
-                const x = centerX - Math.sin(y * frequency + dnaOffset) * amplitude;
-                if (y === 0) {
-                    dnaCtx.moveTo(x, y);
-                } else {
-                    dnaCtx.lineTo(x, y);
-                }
-            }
-            dnaCtx.stroke();
-
-            // Connecting lines
-            dnaCtx.strokeStyle = 'rgba(253, 200, 48, 0.3)';
-            dnaCtx.lineWidth = 1;
-            for (let y = 0; y < dnaCanvas.height; y += 20) {
-                const x1 = centerX + Math.sin(y * frequency + dnaOffset) * amplitude;
-                const x2 = centerX - Math.sin(y * frequency + dnaOffset) * amplitude;
-                dnaCtx.beginPath();
-                dnaCtx.moveTo(x1, y);
-                dnaCtx.lineTo(x2, y);
-                dnaCtx.stroke();
-            }
-
-            dnaOffset += 0.02;
-            requestAnimationFrame(drawDNA);
-        }
-
-        drawDNA();
-
-        // Resize canvases on window resize
         window.addEventListener('resize', () => {
             matrixCanvas.width = window.innerWidth;
             matrixCanvas.height = window.innerHeight;
-            dnaCanvas.width = window.innerWidth;
-            dnaCanvas.height = window.innerHeight;
         });
 
-        // Particle system (optimized)
+        // Particle system
         const particlesContainer = document.getElementById('particles');
-        const particleCount = 30;
+        const particleCount = 40;
 
         for (let i = 0; i < particleCount; i++) {
             const particle = document.createElement('div');
@@ -1107,11 +1261,11 @@
             particlesContainer.appendChild(particle);
         }
 
-        // Custom cursor (only on desktop)
+        // Custom cursor
         const cursorGlow = document.querySelector('.cursor-glow');
         const cursorDot = document.querySelector('.cursor-dot');
 
-        if (window.innerWidth > 600) {
+        if (window.innerWidth > 768) {
             cursorGlow.style.display = 'block';
             cursorDot.style.display = 'block';
             
@@ -1122,21 +1276,19 @@
                 cursorGlow.style.left = (e.clientX - 15) + 'px';
                 cursorGlow.style.top = (e.clientY - 15) + 'px';
                 
-                // Fire trail effect
                 if (Math.random() > 0.7) {
                     createFireParticle(e.clientX, e.clientY);
                 }
             });
         }
 
-        // Fire trail particles
         function createFireParticle(x, y) {
             const fire = document.createElement('div');
             fire.className = 'fire-particle';
             fire.style.left = x + 'px';
             fire.style.top = y + 'px';
             
-            const colors = ['#FF6B35', '#F7931E', '#FDC830', '#FF512F', '#ff4500'];
+            const colors = ['#FF6B35', '#F7931E', '#FDC830', '#FF512F'];
             fire.style.background = colors[Math.floor(Math.random() * colors.length)];
             fire.style.boxShadow = `0 0 10px ${colors[Math.floor(Math.random() * colors.length)]}`;
             
@@ -1147,27 +1299,13 @@
             }, 800);
         }
 
-        // Click explosion effect
         document.addEventListener('click', (e) => {
             createExplosion(e.clientX, e.clientY);
-            
-            // Ripple effect
-            const ripple = document.createElement('div');
-            ripple.className = 'ripple';
-            ripple.style.left = e.clientX + 'px';
-            ripple.style.top = e.clientY + 'px';
-            ripple.style.width = '10px';
-            ripple.style.height = '10px';
-            document.body.appendChild(ripple);
-            
-            setTimeout(() => {
-                ripple.remove();
-            }, 600);
         });
 
         function createExplosion(x, y) {
             const particleCount = 20;
-            const colors = ['#FF6B35', '#F7931E', '#FDC830', '#FF512F', '#fdc830', '#ff6b35'];
+            const colors = ['#FF6B35', '#F7931E', '#FDC830', '#FF512F'];
             
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
@@ -1192,112 +1330,18 @@
             }
         }
 
-        // 3D tilt effect on container
-        const container = document.getElementById('mainContainer');
-        let tiltTimeout;
-        
-        container.addEventListener('mousemove', (e) => {
-            if (!tiltTimeout) {
-                tiltTimeout = setTimeout(() => {
-                    const rect = container.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    
-                    const centerX = rect.width / 2;
-                    const centerY = rect.height / 2;
-                    
-                    const rotateX = (y - centerY) / 30;
-                    const rotateY = (centerX - x) / 30;
-                    
-                    container.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.01, 1.01, 1.01)`;
-                    tiltTimeout = null;
-                }, 16);
-            }
-        });
-        
-        container.addEventListener('mouseleave', () => {
-            container.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
-        });
-
-        // Magnetic effect on social links
-        const socialLinks = document.querySelectorAll('.social-link');
-        
-        socialLinks.forEach(link => {
-            link.addEventListener('mousemove', (e) => {
-                const rect = link.getBoundingClientRect();
-                const x = e.clientX - rect.left - rect.width / 2;
-                const y = e.clientY - rect.top - rect.height / 2;
-                
-                link.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px) translateY(-5px) scale(1.05)`;
-            });
-            
-            link.addEventListener('mouseleave', () => {
-                link.style.transform = 'translate(0, 0)';
-            });
-        });
-
-        // Enhanced badge hover effects
-        const badges = document.querySelectorAll('.badge');
-        
-        badges.forEach(badge => {
-            badge.addEventListener('mouseenter', () => {
-                badge.style.animation = 'none';
-                setTimeout(() => {
-                    badge.style.animation = '';
-                }, 10);
-            });
-        });
-
-        // Particle mouse interaction
-        let particleTimeout;
-        document.addEventListener('mousemove', (e) => {
-            if (!particleTimeout) {
-                particleTimeout = setTimeout(() => {
-                    const particles = document.querySelectorAll('.particle');
-                    const mouseX = e.clientX;
-                    const mouseY = e.clientY;
-                    
-                    particles.forEach(particle => {
-                        const rect = particle.getBoundingClientRect();
-                        const particleX = rect.left + rect.width / 2;
-                        const particleY = rect.top + rect.height / 2;
-                        
-                        const distance = Math.sqrt(Math.pow(mouseX - particleX, 2) + Math.pow(mouseY - particleY, 2));
-                        
-                        if (distance < 100) {
-                            const angle = Math.atan2(particleY - mouseY, particleX - mouseX);
-                            const force = (100 - distance) / 100;
-                            const moveX = Math.cos(angle) * force * 20;
-                            const moveY = Math.sin(angle) * force * 20;
-                            
-                            particle.style.transform = `translate(${moveX}px, ${moveY}px)`;
-                        } else {
-                            particle.style.transform = 'translate(0, 0)';
-                        }
-                    });
-                    particleTimeout = null;
-                }, 32);
-            }
-        });
-
-        // Time of Day Theme
+        // Time theme
         function updateTimeTheme() {
             const hour = new Date().getHours();
             const timeIndicator = document.getElementById('timeIndicator');
             
             if (hour >= 6 && hour < 12) {
-                document.body.classList.remove('evening-mode');
-                document.body.classList.add('day-mode');
                 timeIndicator.textContent = '🌅 Morning Mode';
             } else if (hour >= 12 && hour < 18) {
-                document.body.classList.remove('evening-mode', 'day-mode');
                 timeIndicator.textContent = '☀️ Afternoon Mode';
             } else if (hour >= 18 && hour < 21) {
-                document.body.classList.remove('day-mode');
-                document.body.classList.add('evening-mode');
                 timeIndicator.textContent = '🌆 Evening Mode';
             } else {
-                document.body.classList.remove('day-mode', 'evening-mode');
                 timeIndicator.textContent = '🌙 Night Mode';
             }
         }
@@ -1343,29 +1387,6 @@
 
         updateVisitorCount();
 
-        // Status rotation
-        const statuses = [
-            'Listening to music',
-            'Skripting',
-            'Vibing',
-            'Coding',
-            'Sleeping'
-        ];
-        let currentStatus = 0;
-        const statusText = document.getElementById('statusText');
-
-        function rotateStatus() {
-            currentStatus = (currentStatus + 1) % statuses.length;
-            statusText.style.animation = 'none';
-            setTimeout(() => {
-                statusText.textContent = statuses[currentStatus];
-                statusText.style.animation = 'slideIn 0.5s ease';
-            }, 50);
-        }
-
-        // Change status every 5 seconds
-        setInterval(rotateStatus, 5000);
-
         // Music control
         const audio = document.getElementById('bgMusic');
         const musicToggle = document.getElementById('musicToggle');
@@ -1385,7 +1406,6 @@
             isPlaying = !isPlaying;
         });
 
-        // Auto-play attempt
         window.addEventListener('load', () => {
             audio.volume = 0.3;
             audio.currentTime = 0;
@@ -1393,7 +1413,7 @@
                 isPlaying = true;
                 musicToggle.textContent = '🔊';
             }).catch(() => {
-                console.log('Auto-play blocked. Click the button to play music.');
+                console.log('Auto-play blocked.');
             });
         });
 
@@ -1404,34 +1424,17 @@
             }
         });
 
-        // Konami code easter egg
-        const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
-        let konamiIndex = 0;
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === konamiCode[konamiIndex]) {
-                konamiIndex++;
-                if (konamiIndex === konamiCode.length) {
-                    document.body.style.animation = 'gradient 1s ease infinite';
-                    container.style.animation = 'rotate3d 5s linear infinite';
-                    
-                    for (let i = 0; i < 5; i++) {
-                        setTimeout(() => {
-                            createExplosion(window.innerWidth / 2, window.innerHeight / 2);
-                        }, i * 200);
-                    }
-                    
-                    konamiIndex = 0;
-                    
-                    setTimeout(() => {
-                        container.style.animation = 'fadeInUp 0.8s ease';
-                        document.body.style.animation = 'gradient 8s ease infinite';
-                    }, 5000);
+        // Skill bars animation
+        const skillBars = document.querySelectorAll('.skill-fill');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.width = entry.target.style.width;
                 }
-            } else {
-                konamiIndex = 0;
-            }
+            });
         });
+
+        skillBars.forEach(bar => observer.observe(bar));
     </script>
 </body>
 </html>
